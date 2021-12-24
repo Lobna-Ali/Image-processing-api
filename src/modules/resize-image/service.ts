@@ -30,7 +30,7 @@ export const resizeImage = (res, next, params: Resize) => {
         .end();
       next(envConfig.invalidSizingMsg);
     }
-  } catch (err) { }
+  } catch (err) {}
 };
 
 /**
@@ -75,13 +75,13 @@ const createResizedPath = (params): string => {
 
   return path.join(
     __dirname +
-    envConfig.toImageSrc +
-    (imageName +
-      "_" +
-      params.width.toString() +
-      "_" +
-      params.height.toString() +
-      imageExtenstion)
+      envConfig.toImageSrc +
+      (imageName +
+        "_" +
+        params.width.toString() +
+        "_" +
+        params.height.toString() +
+        imageExtenstion)
   );
 };
 

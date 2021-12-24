@@ -1,5 +1,8 @@
 # Image-processing-api
 
+#### Install package added in package.json
+- Run npm install
+- 
 #### To Run Test
 - Run npm run test.
 

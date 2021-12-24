@@ -16,11 +16,6 @@ const res = {
     }
 };
 
-jasmine.createSpy('sharp', () => () => ({
-    resize: () => ({
-
-    })
-}));
 it('Call resizeImage function with valid data and already cached file', () => {
     spyOn(res, 'sendFile').and.callThrough();
     spyOn(fs, 'existsSync').and.returnValue(true);

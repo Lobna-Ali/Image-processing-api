@@ -13,16 +13,24 @@ import * as envConfig from "../../../config/env-config.json";
  */
 export const resizeImage = (res, next, params: Resize) => {
   try {
-    const toFile = createResizedPath(params);
-    const data = readMainImage(res, next, params);
-    // check if the resied image is already exist
-    if (fs.existsSync(toFile)) {
-      return res.sendFile(toFile).end();
+    // check if the sizes provided for resizing is valid or not first of all before doing any logic
+    if (!isNaN(Number(params.height)) && !isNaN(Number(params.width))) {
+      const toFile = createResizedPath(params);
+      const data = readMainImage(res, next, params);
+      // check if the resied image is already exist
+      if (fs.existsSync(toFile)) {
+        res.sendFile(toFile).end();
+      } else {
+        reziedWithSharp(res, next, params, data, toFile);
+      }
     } else {
-
-     return reziedWithSharp(res, next, params, data, toFile);
+      res
+        .status(400)
+        .json({ error: { message: envConfig.invalidSizingMsg } })
+        .end();
+      next(envConfig.invalidSizingMsg);
     }
-  } catch (err) {}
+  } catch (err) { }
 };
 
 /**
@@ -40,13 +48,14 @@ const readMainImage = (res, next, params) => {
     if (fs.existsSync(imageToResize)) {
       return readFile(imageToResize);
     } else {
-
-
       res.status(404).json({ error: { message: envConfig.reziedMsgNotFound } });
       throw "";
     }
   } catch (err) {
-    res.status(400).json({ error: { message: envConfig.general } }).end();
+    res
+      .status(400)
+      .json({ error: { message: envConfig.general } })
+      .end();
     next(envConfig.general);
   }
 };
@@ -56,7 +65,7 @@ const readMainImage = (res, next, params) => {
  * @param params
  * @returns string
  */
-const createResizedPath = (params) => {
+const createResizedPath = (params): string => {
   const imageName = params.imageName?.substr(0, params.imageName.indexOf("."));
 
   const imageExtenstion = params.imageName.substr(
@@ -85,7 +94,13 @@ const createResizedPath = (params) => {
  * @param toFile
  * @returns Promise <any>
  */
-export const reziedWithSharp = async (res, next, params, data, toFile): Promise<any> => {
+export const reziedWithSharp = async (
+  res,
+  next,
+  params,
+  data,
+  toFile
+): Promise<any> => {
   try {
     await sharp(data)
       .resize({
@@ -94,9 +109,12 @@ export const reziedWithSharp = async (res, next, params, data, toFile): Promise<
       })
       .toFile(toFile);
 
-    return res.sendFile(toFile);
+    res.sendFile(toFile);
   } catch (error) {
-    res.status(400).json({ error: { message: envConfig.invalidSizingMsg } }).end();
+    res
+      .status(400)
+      .json({ error: { message: envConfig.invalidSizingMsg } })
+      .end();
     next(envConfig.invalidSizingMsg);
   }
 };

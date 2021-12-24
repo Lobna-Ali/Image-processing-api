@@ -5,6 +5,6 @@ import fs from "fs";
  * @param filePath
  * @returns Buffer
  */
-export const readFile = (filePath): Buffer  => {
+export const readFile = (filePath): Buffer => {
   return fs.readFileSync(filePath);
 };

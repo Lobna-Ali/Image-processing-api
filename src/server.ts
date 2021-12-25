@@ -11,3 +11,5 @@ app.listen(port, function () {
   // eslint-disable-next-line no-console
   console.log("listening on port", port);
 });
+
+export default app;

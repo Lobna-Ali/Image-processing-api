@@ -5,5 +5,4 @@
   "invalidSizingMsg": "Something went wrong while resizing please add valid images sizing",
   "reziedMsgNotFound": "Image to be resized not found",
   "general": "Something went wrong please check the request url"
-
 }

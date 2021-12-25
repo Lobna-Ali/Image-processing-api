@@ -4,6 +4,7 @@ import path from "path";
 import sharp from "sharp";
 import fs from "fs";
 import * as envConfig from "../../../config/env-config.json";
+import express from "express";
 
 /**
  * Main Function that handle reszing image logic
@@ -14,7 +15,11 @@ import * as envConfig from "../../../config/env-config.json";
  * @param {express.NextFunction} next
  * @returns void
  */
-export const resizeImage = (res, next, params: Resize): void => {
+export const resizeImage = (
+  res: express.Response,
+  next: express.NextFunction,
+  params: Resize
+): void => {
   try {
     // check if the sizes provided for resizing is valid or not first of all before doing any logic
     if (!isNaN(Number(params.height)) && !isNaN(Number(params.width))) {
@@ -39,12 +44,16 @@ export const resizeImage = (res, next, params: Resize): void => {
 /**
  * Check the existance of the image that need to be resized if it exist will read it if not
  * will throw an error that the image is not found
- * @param {express.Request} req
+ * @param {Resize} params
  * @param {express.Response} res
  * @param {express.NextFunction} next
  * @returns Buffer
  */
-const readMainImage = (res, next, params): Buffer => {
+const readMainImage = (
+  res: express.Response,
+  next: express.NextFunction,
+  params: Resize
+): Buffer => {
   const imageToResize = path.join(
     __dirname + envConfig.fromImageSrc + params.imageName
   );
@@ -66,10 +75,10 @@ const readMainImage = (res, next, params): Buffer => {
 
 /**
  * Create the path that will hold the resized images and the resized image name
- * @param params
+ * @param {Resize} params
  * @returns string
  */
-const createResizedPath = (params): string => {
+const createResizedPath = (params: Resize): string => {
   const imageName = params.imageName?.substr(0, params.imageName.indexOf("."));
 
   const imageExtenstion = params.imageName.substr(
@@ -91,19 +100,19 @@ const createResizedPath = (params): string => {
 
 /**
  * resize the main image and store it in the folder for resized images
- * @param res
- * @param next
- * @param params
- * @param data
- * @param toFile
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @param {Resize} params
+ * @param {Buffer} data
+ * @param {string} toFile
  * @returns Promise <any>
  */
 export const reziedWithSharp = async (
-  res,
-  next,
-  params,
-  data,
-  toFile
+  res: express.Response,
+  next: express.NextFunction,
+  params: Resize,
+  data: Buffer,
+  toFile: string
 ): Promise<any> => {
   try {
     await sharp(data)

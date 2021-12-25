@@ -10,11 +10,18 @@ export const router = express.Router();
  * next:{express.NextFunction} and params: Resize for the route
  * @returns void
  */
-router.get("/resize/:imageName", function (req, res, next): void {
-  const params: Resize = {
-    imageName: req.params.imageName,
-    width: req.query.width,
-    height: req.query.height,
-  };
-  resizeSrv.resizeImage(res, next, params);
-});
+router.get(
+  "/resize/:imageName",
+  function (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): void {
+    const params: Resize = {
+      imageName: req.params.imageName,
+      width: req.query.width,
+      height: req.query.height,
+    };
+    resizeSrv.resizeImage(res, next, params);
+  }
+);

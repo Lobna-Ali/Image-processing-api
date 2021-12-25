@@ -10,6 +10,8 @@ import * as envConfig from "../../../config/env-config.json";
  * if the image is already resized and saved no need to resize again
  * if not will call the resizedWithSharo function to resize image
  * @param { Resize } params
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
  * @returns void
  */
 export const resizeImage = (res, next, params: Resize): void => {
@@ -37,9 +39,9 @@ export const resizeImage = (res, next, params: Resize): void => {
 /**
  * Check the existance of the image that need to be resized if it exist will read it if not
  * will throw an error that the image is not found
- * @param res
- * @param next
- * @param params
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
  * @returns Buffer
  */
 const readMainImage = (res, next, params): Buffer => {

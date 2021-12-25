@@ -5,8 +5,9 @@ export const router = express.Router();
 
 /**
  * Api for reszing image
- * @param routePath
- * @param Callbackfn call back function holds the req , res , next params for the route
+ * @param {string} routePath
+ * @param {callback} Callbackfn call back function holds the req: {express.Request} , res: {express.Response} ,
+ * next:{express.NextFunction} and params: Resize for the route
  * @returns void
  */
 router.get("/resize/:imageName", function (req, res, next): void {

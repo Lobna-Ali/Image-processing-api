@@ -10,8 +10,9 @@ import * as envConfig from "../../../config/env-config.json";
  * if the image is already resized and saved no need to resize again
  * if not will call the resizedWithSharo function to resize image
  * @param { Resize } params
+ * @returns void
  */
-export const resizeImage = (res, next, params: Resize) => {
+export const resizeImage = (res, next, params: Resize): void => {
   try {
     // check if the sizes provided for resizing is valid or not first of all before doing any logic
     if (!isNaN(Number(params.height)) && !isNaN(Number(params.width))) {
@@ -39,8 +40,9 @@ export const resizeImage = (res, next, params: Resize) => {
  * @param res
  * @param next
  * @param params
+ * @returns Buffer
  */
-const readMainImage = (res, next, params) => {
+const readMainImage = (res, next, params): Buffer => {
   const imageToResize = path.join(
     __dirname + envConfig.fromImageSrc + params.imageName
   );

@@ -3,7 +3,6 @@
 #### Install package added in package.json
 
 - Run npm install
--
 
 #### To Run Test
 
